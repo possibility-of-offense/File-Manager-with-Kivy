@@ -1,0 +1,126 @@
+WindowManager:
+    TutorialGrid:
+    InfoWindow:
+
+<TutorialGrid>
+    name: "main"
+
+    # Kivy widgets ids
+
+    tutorial_name: tutorial_name
+    add_btn: add_btn
+    put_in_queue: put_in_queue
+    clear_file: clear_file
+    output: output
+    toggle_uppercase: toggle_uppercase
+    output_results: output_results
+    info_buttons: info_buttons
+
+    GridLayout:
+        cols: 1
+
+        TextInput:
+            size_hint_y: None
+            height: 100
+            multiline: False
+            id: tutorial_name
+            on_text_validate: root.handle_press_tutorial_name()
+
+        GridLayout:
+            cols: 4
+            size_hint_y: None
+            height: 60
+
+            Button:
+                text: 'Append to file'
+                id: add_btn
+                on_press: root.handle_add_btn()
+
+            Button:
+                text: 'Put in queue'
+                id: put_in_queue
+                on_press: root.handle_put_in_queue()
+
+            Button:
+                text: 'Clear File'
+                id: clear_file
+                on_press: root.handle_clear_file()
+
+            ToggleButton:
+                id: toggle_uppercase
+                text: 'Make all items uppercased'
+                size_hint_x: 2
+                on_press: root.handle_upper_items()
+                disabled: True
+                background_color:(0.7, 0, 0, 0.9)
+
+        GridLayout:
+            cols: 1
+
+            Label:
+                id: output
+                text: ""
+                font_size: 20
+                size_hint_y: None
+                height: 0
+                background_color: (1, 1, 1, 1)
+                color: (0/255, 0/255, 0/255, 1)
+                bold: True
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+            GridLayout:
+                id: info_buttons
+                cols: 3
+                row_default_height: '38dp'
+                row_force_default: True
+                spacing: 10, 10
+                padding: 10, 10
+                size_hint_y: None
+
+            TextInput:
+                id: output_results
+                opacity: 0
+                disabled: True
+                background_disabled_normal: ''
+                background_normal: ''
+                background_color:(171/255, 200/255, 235/255, 1)
+
+            FloatLayout:
+                Button:
+                    pos_hint: {'x': .5, 'bottom': 1}
+                    size_hint: (0.5, 0.5)
+                    text: 'Go forward'
+                    on_release:
+                        app.root.current = "info"
+                        root.manager.transition.direction = 'left'
+
+<InfoWindow>
+    name: "info"
+    info_results: info_results
+
+    GridLayout:
+        cols: 2
+
+        GridLayout:
+            cols: 1
+
+            FloatLayout:
+                Button:
+                    size_hint: (1, 0.1)
+                    pos_hint: {'bottom': 1}
+                    text: 'Go back'
+                    on_release:
+                        app.root.current = "main"
+                        root.manager.transition.direction = 'right'
+
+        TextInput:
+            id: info_results
+            width: root.width / 1.4
+            size_hint_x: None
+            text: 'Fill here'
+            disabled: True
